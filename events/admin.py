@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from django.contrib.admin import SimpleListFilter
 
 # Register your models here.
 
@@ -12,7 +13,18 @@ class EventPlaceAdmin(admin.ModelAdmin):
 
 
 class TicketAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['event__name']
+    fieldsets = (
+        (None, {
+            'fields': ('event', 'type', 'price', 'place')
+        }),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields': ('sector', 'row')
+        }),
+    )
+    show_full_result_count = True
+    list_filter = ('price', 'event')
 
 
 admin.site.register(Event, EventAdmin)
